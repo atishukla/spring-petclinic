@@ -78,7 +78,7 @@ spec:
             cp -R docker/Dockerfile target/working-dir/
             cp target/spring-petclinic*.jar target/working-dir/
             cd target/working-dir
-            docker build -t atishayshukla/spring-petclinic:${VERSION}
+            docker build -t atishayshukla/spring-petclinic:${VERSION} .
           """
         }
       }
