@@ -65,7 +65,7 @@ spec:
           }
         }
       }
-    }
+    //}
 
     //stage('Test') {
       steps {
@@ -78,7 +78,7 @@ spec:
           junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
         }
       }
-    }
+    //}
 
     //stage('Build Image') {
       steps {
@@ -92,7 +92,7 @@ spec:
           """
         }
       }
-    }
+    //}
 
     //stage('Push Image'){
       steps {
@@ -103,7 +103,7 @@ spec:
           """
         }
       }
-    }
+    //}
 
     stage('Deploy'){
       steps {
