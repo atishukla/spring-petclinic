@@ -36,6 +36,7 @@ spec:
   environment {
     VERSION = ""
     DOCKER_CREDENTIALS = credentials('DOCKER_CREDENTIALS')
+    KUBE_CONFIG = credentials('KUBE_CONFIG ')
   }
 
   stages {
@@ -99,6 +100,20 @@ spec:
           sh """
             docker login -u ${DOCKER_CREDENTIALS_USR} -p ${DOCKER_CREDENTIALS_PSW}
             docker push atishayshukla/spring-petclinic:${VERSION}
+          """
+        }
+      }
+    }
+
+    stage('Deploy'){
+      steps {
+        container('kubectl') {
+          writeFile file: "$JENKINS_AGENT_WORKDIR/.kube/config", text: readFile(KUBE_CONFIG)
+          sh """
+            export KUBECONFIG=$JENKINS_AGENT_WORKDIR/.kube/config
+            sed -i 's/IMAGE_TAG/${VERSION}/g' deploy.yaml
+            kubectl apply -f deploy.yaml
+            kubectl get svc spring-petclinic
           """
         }
       }
