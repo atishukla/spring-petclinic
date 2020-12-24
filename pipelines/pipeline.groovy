@@ -25,10 +25,17 @@ spec:
       command:
         - cat
       tty: true
+      volumeMounts:
+      - mountPath: "/home/jenkins"
+        name: "jenkins_home"
+        readOnly: false
   volumes:
   - hostPath:
       path: "/root/.m2/repository"
     name: "maven-cache"
+  - hostPath:
+      path: "/home/jenkins"
+    name: "jenkins_home"
 """
     }
   }
