@@ -27,7 +27,7 @@ spec:
       tty: true
   volumes:
   - hostPath:
-      path: "/var/jenkins/.m2"
+      path: "/home/jenkins/.m2"
     name: "maven-cache"
 """
     }
