@@ -36,7 +36,7 @@ spec:
   environment {
     VERSION = ""
     DOCKER_CREDENTIALS = credentials('DOCKER_CREDENTIALS')
-    KUBE_CONFIG = credentials('KUBE_CONFIG ')
+    KUBE_CONFIG = credentials('KUBE_CONFIG')
   }
 
   stages {
@@ -108,13 +108,13 @@ spec:
     stage('Deploy'){
       steps {
         container('kubectl') {
-          writeFile file: "/tmp/.kube/config", text: readFile(KUBE_CONFIG)
-          sh """
-            export KUBECONFIG=/tmp/.kube/config
-            sed -i 's/IMAGE_TAG/${VERSION}/g' deploy.yaml
-            kubectl apply -f deploy.yaml
-            kubectl get svc spring-petclinic
-          """
+          // writeFile file: "/tmp/.kube/config", text: readFile(KUBE_CONFIG)
+          sh ("kubectl --kubeconfig $KUBE_CONFIG get pods")
+            // export KUBECONFIG=/tmp/.kube/config
+            // sed -i 's/IMAGE_TAG/${VERSION}/g' deploy.yaml
+            // kubectl apply -f deploy.yaml
+            // kubectl get svc spring-petclinic
+          // """
         }
       }
     }  
