@@ -41,18 +41,7 @@ spec:
 
   stages {
 
-    stage('Checkout') {
-      steps {
-        script {
-          deleteDir()
-          checkout scm
-          def matcher = readFile('pom.xml') =~ '<version>(.+?)</version>'
-          def current_version = matcher ? matcher[0][1] : '0.1.0'
-          VERSION = current_version+'.'+BUILD_NUMBER
-          echo "Version is ${VERSION}"
-        }
-      }
-    }
+    
 
     // Insert here
 
@@ -60,7 +49,8 @@ spec:
       steps {
         container('kubectl') {
           // writeFile file: "/tmp/.kube/config", text: readFile(KUBE_CONFIG)
-          sh ("kubectl --kubeconfig $KUBE_CONFIG get pods")
+          sh ("kubectl version --client")
+          // sh ("kubectl --kubeconfig $KUBE_CONFIG get pods")
             // export KUBECONFIG=/tmp/.kube/config
             // sed -i 's/IMAGE_TAG/${VERSION}/g' deploy.yaml
             // kubectl apply -f deploy.yaml
