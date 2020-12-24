@@ -21,7 +21,7 @@ spec:
       securityContext:
         privileged: true
     - name: 'kubectl'
-      image: bitnami/kubectl
+      image: tiborv/aws-kubectl
       command:
         - cat
       tty: true
