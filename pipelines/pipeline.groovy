@@ -54,7 +54,7 @@ spec:
       }
     }
 
-    stage('Compile') {
+    //stage('Compile') {
       steps {
         container('maven') {
           script {
@@ -67,7 +67,7 @@ spec:
       }
     }
 
-    stage('Test') {
+    //stage('Test') {
       steps {
         container('maven') {
           sh "mvn verify -DskipTests"
@@ -80,7 +80,7 @@ spec:
       }
     }
 
-    stage('Build Image') {
+    //stage('Build Image') {
       steps {
         container('dind') {
           sh """
@@ -94,7 +94,7 @@ spec:
       }
     }
 
-    stage('Push Image'){
+    //stage('Push Image'){
       steps {
         container('dind') {
           sh """
