@@ -12,6 +12,10 @@ spec:
       command:
         - cat
       tty: true
+      volumeMounts:
+      - mountPath: "/home/jenkins/.m2"
+        name: "maven-cache"
+        readOnly: false
     - name: 'dind'
       image: docker:dind
       securityContext:
@@ -21,6 +25,10 @@ spec:
       command:
         - cat
       tty: true
+  volumes:
+  - hostPath:
+      path: "/var/jenkins/.m2"
+    name: "maven-cache"
 """
     }
   }
