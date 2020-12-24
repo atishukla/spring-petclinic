@@ -41,9 +41,69 @@ spec:
 
   stages {
 
-    
+    stage('Checkout') {
+      steps {
+        script {
+          deleteDir()
+          checkout scm
+          def matcher = readFile('pom.xml') =~ '<version>(.+?)</version>'
+          def current_version = matcher ? matcher[0][1] : '0.1.0'
+          VERSION = current_version+'.'+BUILD_NUMBER
+          echo "Version is ${VERSION}"
+        }
+      }
+    }
 
-    // Insert here
+    stage('Compile') {
+      steps {
+        container('maven') {
+          script {
+            sh """
+              mvn versions:set -DnewVersion=${VERSION}
+              mvn clean compile
+            """
+          }
+        }
+      }
+    }
+
+    stage('Test') {
+      steps {
+        container('maven') {
+          sh "mvn verify -DskipTests"
+        }
+      }
+      post {
+        always {
+          junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+        }
+      }
+    }
+
+    stage('Build Image') {
+      steps {
+        container('dind') {
+          sh """
+            mkdir target/working-dir
+            cp -R docker/Dockerfile target/working-dir/
+            cp target/spring-petclinic*.jar target/working-dir/
+            cd target/working-dir
+            docker build -t atishayshukla/spring-petclinic:${VERSION} .
+          """
+        }
+      }
+    }
+
+    stage('Push Image'){
+      steps {
+        container('dind') {
+          sh """
+            docker login -u ${DOCKER_CREDENTIALS_USR} -p ${DOCKER_CREDENTIALS_PSW}
+            docker push atishayshukla/spring-petclinic:${VERSION}
+          """
+        }
+      }
+    }
 
     stage('Deploy'){
       steps {
