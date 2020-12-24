@@ -110,7 +110,7 @@ spec:
         container('kubectl') {
           writeFile file: "/tmp/.kube/config", text: readFile(KUBE_CONFIG)
           sh """
-            export KUBECONFIG=$/tmp/.kube/config
+            export KUBECONFIG=/tmp/.kube/config
             sed -i 's/IMAGE_TAG/${VERSION}/g' deploy.yaml
             kubectl apply -f deploy.yaml
             kubectl get svc spring-petclinic
