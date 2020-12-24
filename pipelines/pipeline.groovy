@@ -27,7 +27,7 @@ spec:
       tty: true
       volumeMounts:
       - mountPath: "/home/jenkins"
-        name: "jenkins_home"
+        name: "jenkins-home"
         readOnly: false
   volumes:
   - hostPath:
@@ -35,7 +35,7 @@ spec:
     name: "maven-cache"
   - hostPath:
       path: "/home/jenkins"
-    name: "jenkins_home"
+    name: "jenkins-home"
 """
     }
   }
