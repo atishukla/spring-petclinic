@@ -38,7 +38,7 @@ spec:
           def matcher = readFile('pom.xml') =~ '<version>(.+?)</version>'
           def current_version = matcher ? matcher[0][1] : '0.1.0'
           VERSION = current_version+'.'+BUILD_NUMBER
-          echo $VERSION
+          echo ${VERSION}
         }
       }
     }
