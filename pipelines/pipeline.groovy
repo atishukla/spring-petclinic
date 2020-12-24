@@ -98,7 +98,7 @@ spec:
       steps {
         container('dind') {
           sh """
-            docker login -u ${DOCKER_CREDENTIALS_USR} -p ${DOCKER_CREDENTIALS_PSW}
+            echo ${DOCKER_CREDENTIALS_PSW} | docker login -u ${DOCKER_CREDENTIALS_USR} -password-stdin 
             docker push atishayshukla/spring-petclinic:${VERSION}
           """
         }
@@ -110,7 +110,6 @@ spec:
         container('kubectl') {
           writeFile file: "$JENKINS_AGENT_WORKDIR/.kube/config", text: readFile(KUBE_CONFIG)
           sh"""
-            sed -i s/127.0.0.1/192.168.0.214/ /$JENKINS_AGENT_WORKDIR/.kube/config
             export KUBECONFIG=$JENKINS_AGENT_WORKDIR/.kube/config
             kubectl get pods
           """
