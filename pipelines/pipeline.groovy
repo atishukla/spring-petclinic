@@ -25,17 +25,10 @@ spec:
       command:
         - cat
       tty: true
-      volumeMounts:
-      - mountPath: "/home/jenkins"
-        name: "jenkins-home"
-        readOnly: false
   volumes:
   - hostPath:
       path: "/root/.m2/repository"
     name: "maven-cache"
-  - hostPath:
-      path: "/home/jenkins"
-    name: "jenkins-home"
 """
     }
   }
@@ -115,9 +108,9 @@ spec:
     stage('Deploy'){
       steps {
         container('kubectl') {
-          writeFile file: "$JENKINS_AGENT_WORKDIR/.kube/config", text: readFile(KUBE_CONFIG)
+          writeFile file: "/tmp/.kube/config", text: readFile(KUBE_CONFIG)
           sh """
-            export KUBECONFIG=$JENKINS_AGENT_WORKDIR/.kube/config
+            export KUBECONFIG=$/tmp/.kube/config
             sed -i 's/IMAGE_TAG/${VERSION}/g' deploy.yaml
             kubectl apply -f deploy.yaml
             kubectl get svc spring-petclinic
