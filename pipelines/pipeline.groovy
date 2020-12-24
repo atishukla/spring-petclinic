@@ -48,13 +48,12 @@ spec:
     stage('Deploy'){
       steps {
         container('kubectl') {
-          // writeFile file: "/tmp/.kube/config", text: readFile(KUBE_CONFIG)
-          sh ("kubectl --kubeconfig $KUBE_CONFIG get pods")
-            // export KUBECONFIG=/tmp/.kube/config
-            // sed -i 's/IMAGE_TAG/${VERSION}/g' deploy.yaml
-            // kubectl apply -f deploy.yaml
-            // kubectl get svc spring-petclinic
-          // """
+          writeFile file: "/tmp/.kube/config", text: readFile(KUBE_CONFIG)
+          sh"""
+            sed -i s/127.0.0.1/192.168.0.214/ /tmp/.kube/config
+            export KUBECONFIG=/tmp/.kube/config
+            kubectl get pods
+          """
         }
       }
     }  
