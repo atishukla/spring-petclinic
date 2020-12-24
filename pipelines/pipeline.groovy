@@ -30,6 +30,7 @@ spec:
   }
 
   stages {
+
     stage('Checkout') {
       steps {
         script {
@@ -42,6 +43,37 @@ spec:
         }
       }
     }
+
+    stage('Compile') {
+      steps {
+        container('maven') {
+          script {
+            sh """
+              mvn versions:set -DnewVersion=${VERSION}
+              mvn clean compile
+            """
+          }
+        }
+      }
+    }
+
+    stage('Test') {
+      steps {
+        container('maven') {
+          script {
+            sh """
+              mvn verify -DskipTests
+            """
+          }
+          post {
+            always {
+              junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+            }
+          }
+        }
+      }
+    }
+
   }
 
 }
