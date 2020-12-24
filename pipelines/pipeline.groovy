@@ -60,19 +60,15 @@ spec:
     stage('Test') {
       steps {
         container('maven') {
-          script {
-            sh """
-              mvn verify -DskipTests
-            """
-          }
-          post {
-            always {
-              junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
-            }
-          }
+          sh "mvn verify -DskipTests"
         }
       }
-    }
+      post {
+        always {
+          junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+        }
+      }
+    }  
 
   }
 
