@@ -48,10 +48,10 @@ spec:
     stage('Deploy'){
       steps {
         container('kubectl') {
-          writeFile file: "/tmp/.kube/config", text: readFile(KUBE_CONFIG)
+          writeFile file: "$JENKINS_AGENT_WORKDIR/.kube/config", text: readFile(KUBE_CONFIG)
           sh"""
-            sed -i s/127.0.0.1/192.168.0.214/ /tmp/.kube/config
-            export KUBECONFIG=/tmp/.kube/config
+            sed -i s/127.0.0.1/192.168.0.214/ /$JENKINS_AGENT_WORKDIR/.kube/config
+            export KUBECONFIG=$JENKINS_AGENT_WORKDIR/.kube/config
             kubectl get pods
           """
         }
