@@ -27,6 +27,7 @@ spec:
 
   environment {
     VERSION = ""
+    DOCKER_CREDENTIALS = credentials('DOCKER_CREDENTIALS')
   }
 
   stages {
