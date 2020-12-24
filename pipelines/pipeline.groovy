@@ -13,7 +13,7 @@ spec:
         - cat
       tty: true
       volumeMounts:
-      - mountPath: "/home/jenkins/.m2"
+      - mountPath: "/root/.m2/repository"
         name: "maven-cache"
         readOnly: false
     - name: 'dind'
@@ -27,7 +27,7 @@ spec:
       tty: true
   volumes:
   - hostPath:
-      path: "/home/jenkins/.m2"
+      path: "/root/.m2/repository"
     name: "maven-cache"
 """
     }
