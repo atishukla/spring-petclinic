@@ -123,7 +123,7 @@ spec:
             --kubeconfig="/dev/null" \
             --server=${KUBERNETES_SERVER} \
             --token=${KUBERNETES_TOKEN} \
-            svc spring-petclinic
+            get svc spring-petclinic
           """
         }
       }
