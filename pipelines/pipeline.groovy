@@ -111,8 +111,8 @@ spec:
       steps {
         container('kubectl') {
           sh"""
-            echo ${KUBERNETES_CLUSTER_CERTIFICATE} > $JENKINS_AGENT_WORKDIR/cert/certificate
-            base64 -d $JENKINS_AGENT_WORKDIR/cert/certificate > cert.crt
+            echo ${KUBERNETES_CLUSTER_CERTIFICATE} > $JENKINS_AGENT_WORKDIR/cert/certificate.crt
+            base64 -d $JENKINS_AGENT_WORKDIR/cert/certificate.crt > cert.crt
             kubectl \
             --kubeconfig=/dev/null \
             --server=${KUBERNETES_SERVER} \
