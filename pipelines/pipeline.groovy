@@ -111,7 +111,8 @@ spec:
       steps {
         container('kubectl') {
           sh"""
-            echo "${KUBERNETES_CLUSTER_CERTIFICATE}" | base64 --decode > cert.crt
+            base64 --version
+            echo "${KUBERNETES_CLUSTER_CERTIFICATE}" | base64 -d > cert.crt
             kubectl \
             --kubeconfig=/dev/null \
             --server=${KUBERNETES_SERVER} \
