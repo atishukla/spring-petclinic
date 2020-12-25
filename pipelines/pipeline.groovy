@@ -113,7 +113,8 @@ spec:
           sh"""
             echo ${KUBERNETES_CLUSTER_CERTIFICATE} > cert.crt
             kubectl \
-            --kubeconfig=/dev/null \
+            --insecure-skip-tls-verify \
+            --kubeconfig="/dev/null" \
             --server=${KUBERNETES_SERVER} \
             --certificate-authority=cert.crt \
             --token=${KUBERNETES_TOKEN} \
