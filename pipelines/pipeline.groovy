@@ -112,11 +112,10 @@ spec:
         container('kubectl') {
           sh"""
             echo ${KUBERNETES_CLUSTER_CERTIFICATE} > cert.crt
+            cat cert.crt
             kubectl \
-            --insecure-skip-tls-verify \
             --kubeconfig="/dev/null" \
             --server=${KUBERNETES_SERVER} \
-            --certificate-authority=cert.crt \
             --token=${KUBERNETES_TOKEN} \
             get pods
           """
