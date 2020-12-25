@@ -111,12 +111,12 @@ spec:
       steps {
         container('kubectl') {
           sh"""
-            echo ${KUBERNETES_CLUSTER_CERTIFICATE} > $JENKINS_AGENT_WORKDIR/cert/certificate.crt
-            base64 -d $JENKINS_AGENT_WORKDIR/cert/certificate.crt > cert.crt
+            echo ${KUBERNETES_CLUSTER_CERTIFICATE} > $JENKINS_AGENT_WORKDIR/certificate.crt
+            base64 -d $JENKINS_AGENT_WORKDIR/certificate.crt > cert.crt
             kubectl \
             --kubeconfig=/dev/null \
             --server=${KUBERNETES_SERVER} \
-            --certificate-authority=$JENKINS_AGENT_WORKDIR/cert/cert.crt \
+            --certificate-authority=$JENKINS_AGENT_WORKDIR/cert.crt \
             --token=${KUBERNETES_TOKEN} \
             get pods
           """
