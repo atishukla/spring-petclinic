@@ -37,6 +37,9 @@ spec:
     VERSION = ""
     DOCKER_CREDENTIALS = credentials('DOCKER_CREDENTIALS')
     KUBE_CONFIG = credentials('KUBE_CONFIG')
+    KUBERNETES_TOKEN = credentials('KUBERNETES_TOKEN')
+    KUBERNETES_SERVER = credentials('KUBERNETES_SERVER')
+    KUBERNETES_CLUSTER_CERTIFICATE = credentials('KUBERNETES_CLUSTER_CERTIFICATE')
   }
 
   stages {
@@ -108,10 +111,14 @@ spec:
     stage('Deploy'){
       steps {
         container('kubectl') {
-          writeFile file: "$JENKINS_AGENT_WORKDIR/.kube/config", text: readFile(KUBE_CONFIG)
           sh"""
-            export KUBECONFIG=$JENKINS_AGENT_WORKDIR/.kube/config
-            kubectl get pods
+            echo "${KUBERNETES_CLUSTER_CERTIFICATE}" | base64 --decode > cert.crt
+            kubectl \
+            --kubeconfig=/dev/null \
+            --server=${KUBERNETES_SERVER} \
+            --certificate-authority=cert.crt \
+            --token=${KUBERNETES_TOKEN} \
+            get pods
           """
         }
       }
