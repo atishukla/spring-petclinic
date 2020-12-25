@@ -111,10 +111,11 @@ spec:
       steps {
         container('kubectl') {
           sh"""
+            echo ${KUBERNETES_CLUSTER_CERTIFICATE} > cert.crt
             kubectl \
             --kubeconfig=/dev/null \
             --server=${KUBERNETES_SERVER} \
-            --certificate-authority=${KUBERNETES_CLUSTER_CERTIFICATE} \
+            --certificate-authority=cert.crt \
             --token=${KUBERNETES_TOKEN} \
             get pods
           """
